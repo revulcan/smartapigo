@@ -7,12 +7,13 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"io/ioutil"
 	"math"
 	"net/url"
 	"sync"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type SocketClient struct {
@@ -24,7 +25,7 @@ type SocketClient struct {
 	reconnectMaxDelay   time.Duration
 	connectTimeout      time.Duration
 	reconnectAttempt    int
-	scrips              string
+	Scrips              string
 	feedToken           string
 	clientCode          string
 }
@@ -68,7 +69,7 @@ func New(clientCode string, feedToken string, scrips string) *SocketClient {
 		reconnectMaxDelay:   defaultReconnectMaxDelay,
 		reconnectMaxRetries: defaultReconnectMaxAttempts,
 		connectTimeout:      defaultConnectTimeout,
-		scrips:              scrips,
+		Scrips:              scrips,
 	}
 
 	return sc
@@ -352,7 +353,7 @@ func (s *SocketClient) Close() error {
 
 // Subscribe subscribes tick for the given list of tokens.
 func (s *SocketClient) Subscribe() error {
-	err := s.Conn.WriteMessage(websocket.TextMessage, []byte(`{"task":"mw","channel":"`+s.scrips+`","token":"`+s.feedToken+`","user": "`+s.clientCode+`","acctid":"`+s.clientCode+`"}`))
+	err := s.Conn.WriteMessage(websocket.TextMessage, []byte(`{"task":"mw","channel":"`+s.Scrips+`","token":"`+s.feedToken+`","user": "`+s.clientCode+`","acctid":"`+s.clientCode+`"}`))
 	if err != nil {
 		s.triggerError(err)
 		return err
